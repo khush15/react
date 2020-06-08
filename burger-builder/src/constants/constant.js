@@ -4,3 +4,8 @@ export const INGREDIENT_PRICES = {
     meat: 0.3,
     bacon:0.7
 }
+
+export const BUTTON = {
+    DANGER: 'Danger',
+    SUCCESS: 'Success'
+}
