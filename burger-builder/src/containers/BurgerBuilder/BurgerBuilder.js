@@ -8,7 +8,7 @@ import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import axios from "../../axios-orders";
 import Spinner from "../..//components/UI/Spinner/Spinner";
-import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 
 class BurgerBuilder extends Component {
   state = {
@@ -24,18 +24,18 @@ class BurgerBuilder extends Component {
     selectedIngredients: 0,
     loading: false
   };
-  
-    // uncomment this for fetching Data getting CORS error so comented
-    // componentDidMount() {
-    //   axios
-    //     .get("https://react-my-burger-f6d2b.firebaseio.com/ingredients")
-    //     .then(res => {
-    //       this.setState({ ingredients: res.data });
-    //       console.log(res);
-    //     }).catch(error => {
-      // this.setState({error: true})
-    // });
-    // }
+
+  // uncomment this for fetching Data getting CORS error so comented
+  // componentDidMount() {
+  //   axios
+  //     .get("https://react-my-burger-f6d2b.firebaseio.com/ingredients")
+  //     .then(res => {
+  //       this.setState({ ingredients: res.data });
+  //       console.log(res);
+  //     }).catch(error => {
+  // this.setState({error: true})
+  // });
+  // }
 
   updatePurchaseState(ingredients) {
     const sum = Object.keys(ingredients)
@@ -90,33 +90,23 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    // alert("You Continue");
-    this.setState({ loading: true });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: "Max",
-        address: {
-          street: "test street",
-          zipCode: "1234",
-          country: "India"
-        },
-        email: "khsachan@in.ibm.com"
-      },
-      deliveryMethod: "fastest"
-    };
-
-    axios
-      .post("/orders.json", order)
-      .then(res => {
-        // console.log(res);
-        this.setState({loading: false, purchasing: false});
-      })
-      .catch(error => {
-        // console.log(error);
-        this.setState({loading: false, purchasing: false});
-      });
+    const queryParams = [];
+    // now add elements to that array
+    for (let i in this.state.ingredients) {
+      //push each ingredients to this queryparams array    // encodeURIComponent(propertyname,)-> which encodes element such that they can be used in URL this is relevant for whitespace
+      queryParams.push(
+        encodeURIComponent(i) +
+          "=" +
+          encodeURIComponent(this.state.ingredients[i])
+      );
+    }
+    queryParams.push('price=' + this.state.totalPrice.toFixed(2));
+    const queryString = queryParams.join('&');
+    // push allows to  switch the page and push a new page onto that stack of page
+    this.props.history.push({
+      pathname: "/checkout",
+      search: "?" + queryString
+    });
   };
 
   render() {
