@@ -8,6 +8,7 @@ const button = props => (
     // className={[classes.Button, classes[props.btnType]]}  // what we pass to class it has to be a string, right now its array of string
     className={[classes.Button, classes[props.btnType]].join(' ')}
     onClick={props.clicked}
+    disabled={props.disabled}
   >
     {props.children}
   </button>
